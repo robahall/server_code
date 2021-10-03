@@ -3,6 +3,7 @@
 Working through deployment of NVIDIA Triton Server using grpc and Object Detection model. 
 
 Goals:
+*   Flask REST API in container
 *   FastAPI REST API in container
 *   Using GRPC API
 *   Triton + GRPC
@@ -14,5 +15,12 @@ Goals:
 *   Different compiled models:
     *   Non compiled
     *   TensorRT
-    *   Torchscript
+    *   TorchScript
+*   CPU/GPU
+*   Image/Video
+*   Client Server
+*   Data Logging and Analysis
+    * What's important?
+    
+    
     
