@@ -1,20 +1,18 @@
-name: "ssd_mobilenet_torch"
+name: "ssd_mobilenet_v3"
 platform: "pytorch_libtorch"
 max_batch_size : 0
 input [
   {
-    name: "data_0"
-    data_type: kFloat
-    dims: [ 3, 1600, 2400 ]
-    reshape { shape: [ 1, 3, 320, 320 ] }
-  }
+    name: "INPUT__0"
+    data_type: TYPE_FP32
+    dims: [-1, 3, -1, -1 ]
+    }
 ]
 output [
   {
-    name: "output_1"
-    data_type: kFloat
-    dims: [ 80 ]
-    reshape { shape: [ 1, 80-, 1, 1 ] }
+    name: "OUTPUT__0"
+    data_type: TYPE_FP32
+    dims: [ -1, 1, -1, -1 ]
     label_filename: "coco_labels.txt"
-  }
+    }
 ]
