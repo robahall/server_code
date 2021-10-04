@@ -25,4 +25,9 @@ docker run --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/home/rob/PycharmProjects/
 
 Next steps:
 #### Run inference Server
+Need to install tritonclient server
+
+```bash
+pip install tritonclient[all]
+```
 
