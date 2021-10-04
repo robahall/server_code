@@ -9,10 +9,19 @@ input [
     }
 ]
 output [
-  {
-    name: "OUTPUT__0"
-    data_type: TYPE_FP32
-    dims: [ -1, 1, -1, -1 ]
-    label_filename: "coco_labels.txt"
-    }
+{
+name: "boxes__0"
+data_type: TYPE_FP32
+dims: [ 300, 4 ]
+},
+{
+name: "scores__1"
+data_type: TYPE_FP32
+dims: [ 300 ]
+},
+{
+name: "labels__2"
+data_type: TYPE_FP32
+dims: [ 300 ]
+}
 ]
