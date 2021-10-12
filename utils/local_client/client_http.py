@@ -30,6 +30,9 @@ import numpy as np
 import sys
 import gevent.ssl
 
+import cv2
+from torchvision.utils import draw_bounding_boxes
+
 import tritonclient.http as httpclient
 from tritonclient.utils import InferenceServerException
 
@@ -90,6 +93,17 @@ def test_infer_no_outputs(model_name,
         response_compression_algorithm=response_compression_algorithm)
 
     return results
+
+def draw_bboxes_on_image(image, bboxes, **kwargs):
+    #out_image = draw_bboxes_on_image(image, bboxes)
+    color = (255, 0, 0)
+    thickness = 5
+
+    for bbox in bboxes:
+        start = bbox[0:2]
+        end = bbox[2:]
+        image = cv2.rectangle(image, start, end, color, thickness)
+    return image.numpy()
 
 
 if __name__ == '__main__':
@@ -160,9 +174,18 @@ if __name__ == '__main__':
 
     ##TODO: CHANGE THIS TO LOAD FILE
     in_size = 320
-    input0_data = np.random.uniform(0.0, 250.0, size=(1, 3, in_size, in_size))
+    down_points = (in_size, in_size)
+    # input0_data = np.random.uniform(0.0, 250.0, size=(1, 3, in_size, in_size))
+    # input0_data = np.array(input0_data, dtype=np.float32)
+    # print(input0_data.dtype)
+
+    input0_data = cv2.imread("../../data/cars_on_road.jpg")
+    input0_data = cv2.resize(input0_data, down_points, interpolation= cv2.INTER_LINEAR)
     input0_data = np.array(input0_data, dtype=np.float32)
-    print(input0_data.dtype)
+    input0_data = np.transpose(input0_data, (2,0,1))
+    input0_data = np.expand_dims(input0_data, axis=0)
+
+
 
     if FLAGS.http_headers is not None:
         headers_dict = {
@@ -193,3 +216,8 @@ if __name__ == '__main__':
     print(f"BBOXES: {boxes}")
     print(f"SCORES: {scores}")
     print(f"LABELS: {labels}")
+
+    out_image = draw_bboxes_on_image(input0_data, boxes,)
+    status = cv2.imwrite("../../data/cars_on_road_result.jpg", out_image)
+    print("Image written to file-system : ", status)
+
