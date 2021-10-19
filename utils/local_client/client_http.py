@@ -95,7 +95,6 @@ def test_infer_no_outputs(model_name,
     return results
 
 def draw_bboxes_on_image(image, bboxes, **kwargs):
-    #out_image = draw_bboxes_on_image(image, bboxes)
     color = (255, 0, 0)
     thickness = 5
 
@@ -179,9 +178,9 @@ if __name__ == '__main__':
     # input0_data = np.array(input0_data, dtype=np.float32)
     # print(input0_data.dtype)
 
-    input0_data = cv2.imread("../../data/cars_on_road.jpg")
-    input0_data = cv2.resize(input0_data, down_points, interpolation= cv2.INTER_LINEAR)
-    input0_data = np.array(input0_data, dtype=np.float32)
+    input_image = cv2.imread("../../data/cars_on_road.jpg")
+    input_image = cv2.resize(input_image, down_points, interpolation= cv2.INTER_LINEAR)
+    input0_data = np.array(input_image, dtype=np.float32)
     input0_data = np.transpose(input0_data, (2,0,1))
     input0_data = np.expand_dims(input0_data, axis=0)
 
@@ -217,7 +216,7 @@ if __name__ == '__main__':
     print(f"SCORES: {scores}")
     print(f"LABELS: {labels}")
 
-    out_image = draw_bboxes_on_image(input0_data, boxes,)
+    out_image = draw_bboxes_on_image(input_image, boxes,)
     status = cv2.imwrite("../../data/cars_on_road_result.jpg", out_image)
     print("Image written to file-system : ", status)
 
