@@ -82,14 +82,14 @@ def deserialize_bytes_tensor(encoded_tensor):
 def parse_model(model_metadata, model_config):
     """
     Check the configuration of a model to make sure it meets the
-    requirements for an image classification network (as expected by
+    requirements for an object detection network (as expected by
     this client)
     """
     if len(model_metadata.inputs) != 1:
         raise Exception("expecting 1 input, got {}".format(
             len(model_metadata.inputs)))
-    if len(model_metadata.outputs) != 1:
-        raise Exception("expecting 1 output, got {}".format(
+    if len(model_metadata.outputs) != 3:
+        raise Exception("expecting 3 output, got {}".format(
             len(model_metadata.outputs)))
 
     if len(model_config.input) != 1:
@@ -112,13 +112,13 @@ def parse_model(model_metadata, model_config):
     # is one.
     output_batch_dim = (model_config.max_batch_size > 0)
     non_one_cnt = 0
-    for dim in output_metadata.shape:
-        if output_batch_dim:
-            output_batch_dim = False
-        elif dim > 1:
-            non_one_cnt += 1
-            if non_one_cnt > 1:
-                raise Exception("expecting model output to be a vector")
+    # for dim in output_metadata.shape:
+    #     if output_batch_dim:
+    #         output_batch_dim = False
+    #     elif dim > 1:
+    #         non_one_cnt += 1
+    #         if non_one_cnt > 1:
+    #             raise Exception("expecting model output to be a vector")
 
     # Model input must have 3 dims, either CHW or HWC (not counting
     # the batch dimension), either CHW or HWC
@@ -130,14 +130,14 @@ def parse_model(model_metadata, model_config):
             format(expected_input_dims, model_metadata.name,
                    len(input_metadata.shape)))
 
-    if ((input_config.format != mc.ModelInput.FORMAT_NCHW) and
-        (input_config.format != mc.ModelInput.FORMAT_NHWC)):
-        raise Exception("unexpected input format " +
-                        mc.ModelInput.Format.Name(input_config.format) +
-                        ", expecting " +
-                        mc.ModelInput.Format.Name(mc.ModelInput.FORMAT_NCHW) +
-                        " or " +
-                        mc.ModelInput.Format.Name(mc.ModelInput.FORMAT_NHWC))
+    # if ((input_config.format != mc.ModelInput.FORMAT_NCHW) and
+    #     (input_config.format != mc.ModelInput.FORMAT_NHWC)):
+    #     raise Exception("unexpected input format " +
+    #                     mc.ModelInput.Format.Name(input_config.format) +
+    #                     ", expecting " +
+    #                     mc.ModelInput.Format.Name(mc.ModelInput.FORMAT_NCHW) +
+    #                     " or " +
+    #                     mc.ModelInput.Format.Name(mc.ModelInput.FORMAT_NHWC))
 
     if input_config.format == mc.ModelInput.FORMAT_NHWC:
         h = input_metadata.shape[1 if input_batch_dim else 0]
@@ -206,7 +206,8 @@ def postprocess(response, filenames, batch_size):
         raise Exception("expected 1 output content, got {}".format(
             len(response.raw_output_contents)))
 
-    batched_result = deserialize_bytes_tensor(response.raw_output_contents[0])
+
+    # batched_result = deserialize_bytes_tensor(response.raw_output_contents[0])
     contents = np.reshape(batched_result, response.outputs[0].shape)
 
     if len(contents) != batch_size:
