@@ -1,6 +1,6 @@
-# Notes for building a Triton Server from scratch
-Goals:
-*   Build with custom backend for pytorch
-*   custom grpc api
-*   client interface
+# Notes for next steps:
 
+
+* troubleshoot error:
+
+* Draw bboxes on images. 
