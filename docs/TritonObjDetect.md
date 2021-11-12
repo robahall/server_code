@@ -31,3 +31,31 @@ Need to install tritonclient server
 pip install tritonclient[all]
 ```
 
+# Notes on object detection using Triton on GPU
+
+### Need to install NVIDIA Container Toolkit
+
+#### Using Linux Mint based on Ubuntu
+
+```bash
+cat /etc/upstream-release/lsb-release 
+```
+
+Currently running Mint 20 so ubuntu20.04
+
+```bash
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list`
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+sudo systemctl restart docker
+sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+```
+
+TODO: 
+* Had to update CUDA 11.5
+
+* Update Pytorch to 11.5?
+* Reboot TritonServer. 
+* Still failing on forward pass. 
