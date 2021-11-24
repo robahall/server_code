@@ -3,8 +3,8 @@
 Working through deployment of NVIDIA Triton Server using grpc and Object Detection model. 
 
 Goals:
-*   Flask REST API in container
-*   FastAPI REST API in container
+*   FastAPI in container
+*   HTTP API in container
 *   Using GRPC API
 *   Triton + GRPC
     *   Triton working with multiheaded algorithms
